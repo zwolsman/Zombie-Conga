@@ -28,8 +28,9 @@ class GameScene: SKScene {
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     
-    let zombieMovePointsPerSec: CGFloat = 480.0
-    let zombieRotateRadiansPerSec:CGFloat = 4.0 * π
+    let zombieMovePointsPerSec: CGFloat = 480
+    let zombieRotateRadiansPerSec:CGFloat = 4 * π
+    let catMovePointsPerSec: CGFloat = 480
     
     var velocity = CGPoint.zero
     var lastTouchLocation = CGPoint.zero
@@ -55,7 +56,7 @@ class GameScene: SKScene {
         zombieAnimation = SKAction.animate(with: textures, timePerFrame: 0.1)
         super.init(size: size)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -80,6 +81,7 @@ class GameScene: SKScene {
         background.zPosition = -1
         
         zombie.position = CGPoint(x: 400, y: 400)
+        zombie.zPosition = 100
         
         addChild(background)
         addChild(zombie)
@@ -119,7 +121,9 @@ class GameScene: SKScene {
             rotate(sprite: zombie, direction: velocity, rotateRadiansPerSec: zombieRotateRadiansPerSec)
         }
         boundsCheckZombie()
+        moveTrain()
     }
+    
     
     override func didEvaluateActions() {
         checkCollisions()
@@ -275,6 +279,22 @@ class GameScene: SKScene {
     }
     //END MARK
     
+    func moveTrain() {
+        var targetPosition = zombie.position
+        enumerateChildNodes(withName: "train") { node, stop in
+            if !node.hasActions() {
+                let actionDuration = 0.3
+                let offset = targetPosition - node.position// a
+                let direction = offset.normalized() // b
+                let amountToMovePerSec = direction * self.catMovePointsPerSec // c
+                let amountToMove = amountToMovePerSec * CGFloat(actionDuration) // d
+                let moveAction = SKAction.moveBy(x: amountToMove.x, y: amountToMove.y, duration: actionDuration)// e
+                node.run(moveAction)
+            }
+            targetPosition = node.position
+        }
+    }
+    
     func zombieHit(cat: SKSpriteNode) {
         run(catCollisionSound)
         cat.name = TRAIN_KEY
@@ -284,6 +304,7 @@ class GameScene: SKScene {
         let colorAction = SKAction.colorize(with: SKColor.green, colorBlendFactor: 1, duration: 0.2)
         cat.run(colorAction)
     }
+    
     func zombieHit(enemy: SKSpriteNode) {
         run(enemyCollisionSound)
         
