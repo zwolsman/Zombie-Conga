@@ -16,6 +16,7 @@ class GameScene: SKScene {
     let CAT_KEY = "cat"
     
     let zombie = SKSpriteNode(imageNamed: "zombie1")
+    var isInvincible = false
     
     //Sounds
     let catCollisionSound: SKAction = SKAction.playSoundFileNamed(
@@ -179,6 +180,9 @@ class GameScene: SKScene {
             zombieHit(cat: cat)
         }
         
+        if isInvincible {
+            return 
+        }
         var hitEnemies: [SKSpriteNode] = []
         enumerateChildNodes(withName: ENEMY_KEY) { (node, _) in
             let enemy = node as! SKSpriteNode
@@ -276,6 +280,21 @@ class GameScene: SKScene {
     }
     func zombieHit(enemy: SKSpriteNode) {
         run(enemyCollisionSound)
-        enemy.removeFromParent()
+        
+        let blinkTimes = 10.0
+        let duration = 3.0
+        let blinkAction = SKAction.customAction(
+        withDuration: duration) { node, elapsedTime in
+            let slice = duration / blinkTimes
+            let remainder = Double(elapsedTime).truncatingRemainder(
+                dividingBy: slice)
+            node.isHidden = remainder > slice / 2
+        }
+        let endAction = SKAction.run { [weak self] in
+            self?.isInvincible = false
+            self?.zombie.isHidden = false
+        }
+        isInvincible = true
+        zombie.run(SKAction.sequence([blinkAction, endAction]))
     }
 }
