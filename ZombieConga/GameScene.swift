@@ -14,6 +14,7 @@ class GameScene: SKScene {
     let ZOMBIE_ANIMATION_KEY = "zombieAnimation"
     let ENEMY_KEY = "enemy"
     let CAT_KEY = "cat"
+    let TRAIN_KEY = "train"
     
     let zombie = SKSpriteNode(imageNamed: "zombie1")
     var isInvincible = false
@@ -181,7 +182,7 @@ class GameScene: SKScene {
         }
         
         if isInvincible {
-            return 
+            return
         }
         var hitEnemies: [SKSpriteNode] = []
         enumerateChildNodes(withName: ENEMY_KEY) { (node, _) in
@@ -276,7 +277,12 @@ class GameScene: SKScene {
     
     func zombieHit(cat: SKSpriteNode) {
         run(catCollisionSound)
-        cat.removeFromParent()
+        cat.name = TRAIN_KEY
+        cat.removeAllActions()
+        cat.setScale(1)
+        cat.zRotation = 0
+        let colorAction = SKAction.colorize(with: SKColor.green, colorBlendFactor: 1, duration: 0.2)
+        cat.run(colorAction)
     }
     func zombieHit(enemy: SKSpriteNode) {
         run(enemyCollisionSound)
