@@ -66,11 +66,20 @@ class GameScene: SKScene {
         
         addChild(background)
         addChild(zombie)
+        //Spawn enemies
         run(SKAction.repeatForever(
             SKAction.sequence([SKAction.run() { [weak self] in
                 self?.spawnEnemy()
                 },
                                SKAction.wait(forDuration: 2.0)])))
+        
+        //Spawn cats
+        run(SKAction.repeatForever(
+            SKAction.sequence([SKAction.run() { [weak self] in
+                self?.spawnCat()
+                },
+                               SKAction.wait(forDuration: 1)])))
+        
         debugDrawPlayableArea()
         
     }
@@ -170,6 +179,28 @@ class GameScene: SKScene {
         enemy.run(SKAction.sequence([actionMove, actionRemove]))
     }
     
+    func spawnCat() {
+        let cat = SKSpriteNode(imageNamed: "cat")
+        cat.position = CGPoint(
+            x: CGFloat.random(min: playableRect.minX,
+                              max: playableRect.maxX),
+            y: CGFloat.random(min: playableRect.minY,
+                              max: playableRect.maxY))
+        cat.setScale(0)
+        addChild(cat)
+        
+        let appear = SKAction.scale(to: 1, duration: 0.5)
+        cat.zRotation = -π / 16.0
+        let leftWiggle = SKAction.rotate(byAngle: π/8.0, duration: 0.5)
+        let rightWiggle = leftWiggle.reversed()
+        let fullWiggle = SKAction.sequence([leftWiggle, rightWiggle])
+        let wiggleWait = SKAction.repeat(fullWiggle, count: 10)
+        
+        let disappear = SKAction.scale(to: 0, duration: 0.5)
+        let removeFromParent = SKAction.removeFromParent()
+        let actions = [appear, wiggleWait, disappear, removeFromParent]
+        cat.run(SKAction.sequence(actions))
+    }
     func startZombieAnimation() {
         if zombie.action(forKey: ZOMBIE_ANIMATION_KEY) == nil {
             zombie.run(SKAction.repeatForever(zombieAnimation), withKey: ZOMBIE_ANIMATION_KEY)
