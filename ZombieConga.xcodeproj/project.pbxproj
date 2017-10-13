@@ -14,6 +14,11 @@
 		5889F1191F90C8AF002E8CE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5889F1181F90C8AF002E8CE3 /* Assets.xcassets */; };
 		5889F11C1F90C8AF002E8CE3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5889F11A1F90C8AF002E8CE3 /* LaunchScreen.storyboard */; };
 		5889F1241F90F210002E8CE3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5889F1231F90F210002E8CE3 /* Utils.swift */; };
+		5889F12B1F915709002E8CE3 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5889F12A1F91563F002E8CE3 /* win.wav */; };
+		5889F12C1F91570C002E8CE3 /* lose.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5889F1291F91563F002E8CE3 /* lose.wav */; };
+		5889F12D1F91570E002E8CE3 /* hitCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5889F1271F91563F002E8CE3 /* hitCat.wav */; };
+		5889F12E1F915710002E8CE3 /* hitCatLady.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5889F1281F91563F002E8CE3 /* hitCatLady.wav */; };
+		5889F12F1F915713002E8CE3 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5889F1261F91563F002E8CE3 /* backgroundMusic.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,8 +152,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5889F12C1F91570C002E8CE3 /* lose.wav in Resources */,
 				5889F1171F90C8AF002E8CE3 /* Main.storyboard in Resources */,
+				5889F12F1F915713002E8CE3 /* backgroundMusic.mp3 in Resources */,
+				5889F12B1F915709002E8CE3 /* win.wav in Resources */,
+				5889F12D1F91570E002E8CE3 /* hitCat.wav in Resources */,
 				5889F1191F90C8AF002E8CE3 /* Assets.xcassets in Resources */,
+				5889F12E1F915710002E8CE3 /* hitCatLady.wav in Resources */,
 				5889F11C1F90C8AF002E8CE3 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
