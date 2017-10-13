@@ -10,9 +10,12 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    //Consts
+    let ZOMBIE_ANIMATION_KEY = "zombieAnimation"
+    let ENEMY_KEY = "enemy"
+    let CAT_KEY = "cat"
     
     let zombie = SKSpriteNode(imageNamed: "zombie1")
-    let ZOMBIE_ANIMATION_KEY = "zombieAnimation"
     
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
@@ -102,6 +105,7 @@ class GameScene: SKScene {
             rotate(sprite: zombie, direction: velocity, rotateRadiansPerSec: zombieRotateRadiansPerSec)
         }
         boundsCheckZombie()
+        checkCollisions()
     }
     func sceneTouched(touchLocation:CGPoint) {
         moveZombieToward(location: touchLocation)
@@ -145,6 +149,31 @@ class GameScene: SKScene {
             velocity.y = -velocity.y
         }
     }
+    
+    func checkCollisions() {
+        var hitCats: [SKSpriteNode] = []
+        enumerateChildNodes(withName: CAT_KEY) { (node, _) in
+            let cat = node as! SKSpriteNode
+            if cat.frame.intersects(self.zombie.frame) {
+                hitCats.append(cat)
+            }
+        }
+        for cat in hitCats {
+            zombieHit(cat: cat)
+        }
+        
+        var hitEnemies: [SKSpriteNode] = []
+        enumerateChildNodes(withName: ENEMY_KEY) { (node, _) in
+            let enemy = node as! SKSpriteNode
+            if node.frame.insetBy(dx: 20, dy: 20).intersects(self.zombie.frame) {
+                hitEnemies.append(enemy)
+            }
+        }
+        for enemy in hitEnemies {
+            zombieHit(enemy: enemy)
+        }
+    }
+    
     func moveZombieToward(location: CGPoint) {
         startZombieAnimation()
         let offset = location - zombie.position
@@ -167,6 +196,7 @@ class GameScene: SKScene {
     }
     func spawnEnemy() {
         let enemy = SKSpriteNode(imageNamed: "enemy")
+        enemy.name = ENEMY_KEY
         enemy.position = CGPoint(
             x: size.width + enemy.size.width/2,
             y: CGFloat.random(
@@ -181,6 +211,7 @@ class GameScene: SKScene {
     
     func spawnCat() {
         let cat = SKSpriteNode(imageNamed: "cat")
+        cat.name = CAT_KEY
         cat.position = CGPoint(
             x: CGFloat.random(min: playableRect.minX,
                               max: playableRect.maxX),
@@ -213,5 +244,12 @@ class GameScene: SKScene {
     }
     func stopZombieAnimation() {
         zombie.removeAction(forKey: ZOMBIE_ANIMATION_KEY)
+    }
+    
+    func zombieHit(cat: SKSpriteNode) {
+        cat.removeFromParent()
+    }
+    func zombieHit(enemy: SKSpriteNode) {
+        enemy.removeFromParent()
     }
 }
