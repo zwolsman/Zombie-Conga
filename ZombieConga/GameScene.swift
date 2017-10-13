@@ -18,6 +18,7 @@ class GameScene: SKScene {
     
     let zombieMovePointsPerSec: CGFloat = 480.0
     var velocity = CGPoint.zero
+    var lastTouchLocation = CGPoint.zero
     
     let playableRect: CGRect
     override init(size: CGSize) {
@@ -60,15 +61,23 @@ class GameScene: SKScene {
         if lastUpdateTime > 0 {
             dt = currentTime - lastUpdateTime
         } else {
-            dt = 0 }
+            dt = 0
+        }
         lastUpdateTime = currentTime
         
-        move(sprite: zombie, velocity: velocity)
+        let distance = zombie.position - lastTouchLocation
+        if distance.length() <= zombieMovePointsPerSec * CGFloat(dt) {
+            zombie.position = lastTouchLocation
+            velocity = CGPoint.zero
+        } else {
+            move(sprite: zombie, velocity: velocity)
+            rotate(sprite: zombie, direction: velocity)
+        }
         boundsCheckZombie()
-        rotate(sprite: zombie, direction: velocity)
     }
     func sceneTouched(touchLocation:CGPoint) {
         moveZombieToward(location: touchLocation)
+        lastTouchLocation = touchLocation
     }
     override func touchesBegan(_ touches: Set<UITouch>,
                                with event: UIEvent?) {
