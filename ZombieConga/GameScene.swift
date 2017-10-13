@@ -19,6 +19,29 @@ class GameScene: SKScene {
     let zombieMovePointsPerSec: CGFloat = 480.0
     var velocity = CGPoint.zero
     
+    let playableRect: CGRect
+    override init(size: CGSize) {
+        let maxAspectRatio:CGFloat = 16/9
+        let playableHeight = size.width / maxAspectRatio
+        let playableMargin = (size.height - playableHeight) / 2
+        playableRect = CGRect(x: 0,
+                              y: playableMargin,
+                              width: size.width,
+                              height: playableHeight)
+        super.init(size: size)
+    }
+    func debugDrawPlayableArea() {
+        let shape = SKShapeNode()
+        let path = CGMutablePath()
+        path.addRect(playableRect)
+        shape.path = path
+        shape.strokeColor = SKColor.red
+        shape.lineWidth = 4.0
+        addChild(shape)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
         let background = SKSpriteNode(imageNamed: "background1")
@@ -30,6 +53,7 @@ class GameScene: SKScene {
         
         addChild(background)
         addChild(zombie)
+        debugDrawPlayableArea()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -41,6 +65,7 @@ class GameScene: SKScene {
         
         move(sprite: zombie, velocity: velocity)
         boundsCheckZombie()
+        rotate(sprite: zombie, direction: velocity)
     }
     func sceneTouched(touchLocation:CGPoint) {
         moveZombieToward(location: touchLocation)
@@ -63,8 +88,8 @@ class GameScene: SKScene {
     }
     
     func boundsCheckZombie() {
-        let bottomLeft = CGPoint.zero
-        let topRight = CGPoint(x: size.width, y: size.height)
+        let bottomLeft = CGPoint(x: 0, y: playableRect.minY)
+        let topRight = CGPoint(x: size.width, y: playableRect.maxY)
         
         if zombie.position.x <= bottomLeft.x {
             zombie.position.x = bottomLeft.x
@@ -92,6 +117,9 @@ class GameScene: SKScene {
                                 y: offset.y / CGFloat(length))
         velocity = CGPoint(x: direction.x * zombieMovePointsPerSec,
                            y: direction.y * zombieMovePointsPerSec)
+    }
+    func rotate(sprite: SKSpriteNode, direction: CGPoint) {
+        sprite.zRotation = CGFloat(atan2(Double(direction.y), Double(direction.x)))
     }
     func move(sprite: SKSpriteNode, velocity: CGPoint) {
         let amountToMove = CGPoint(x: velocity.x * CGFloat(dt),
