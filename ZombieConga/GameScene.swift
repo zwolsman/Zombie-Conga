@@ -16,7 +16,6 @@ class GameScene: SKScene {
     let CAT_KEY = "cat"
     let TRAIN_KEY = "train"
     
-    let zombie = SKSpriteNode(imageNamed: "zombie1")
     var isInvincible = false
     
     //Sounds
@@ -28,16 +27,21 @@ class GameScene: SKScene {
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     
+    //Zombie
+    let zombie = SKSpriteNode(imageNamed: "zombie1")
     let zombieMovePointsPerSec: CGFloat = 480
     let zombieRotateRadiansPerSec:CGFloat = 4 * π
+    let zombieAnimation: SKAction
+
+    //Cat
     let catMovePointsPerSec: CGFloat = 480
+    let catRotateRadiansPerSec: CGFloat = 4 * π
     
     var velocity = CGPoint.zero
     var lastTouchLocation = CGPoint.zero
     
     let playableRect: CGRect
     
-    let zombieAnimation: SKAction
     
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16/9
@@ -218,6 +222,7 @@ class GameScene: SKScene {
         sprite.zRotation += shortest.sign() * amountToRotate
     }
     
+    
     func move(sprite: SKSpriteNode, velocity: CGPoint) {
         let amountToMove = velocity * CGFloat(dt)
         sprite.position += amountToMove
@@ -282,15 +287,17 @@ class GameScene: SKScene {
     func moveTrain() {
         var targetPosition = zombie.position
         enumerateChildNodes(withName: "train") { node, stop in
+            let offset = targetPosition - node.position// a
+            let direction = offset.normalized() // b
+            
             if !node.hasActions() {
                 let actionDuration = 0.3
-                let offset = targetPosition - node.position// a
-                let direction = offset.normalized() // b
                 let amountToMovePerSec = direction * self.catMovePointsPerSec // c
                 let amountToMove = amountToMovePerSec * CGFloat(actionDuration) // d
                 let moveAction = SKAction.moveBy(x: amountToMove.x, y: amountToMove.y, duration: actionDuration)// e
                 node.run(moveAction)
             }
+             self.rotate(sprite: node as! SKSpriteNode, direction: direction, rotateRadiansPerSec: self.catRotateRadiansPerSec)
             targetPosition = node.position
         }
     }
