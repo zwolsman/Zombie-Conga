@@ -17,6 +17,12 @@ class GameScene: SKScene {
     
     let zombie = SKSpriteNode(imageNamed: "zombie1")
     
+    //Sounds
+    let catCollisionSound: SKAction = SKAction.playSoundFileNamed(
+        "hitCat.wav", waitForCompletion: false)
+    let enemyCollisionSound: SKAction = SKAction.playSoundFileNamed(
+        "hitCatLady.wav", waitForCompletion: false)
+    
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     
@@ -265,13 +271,11 @@ class GameScene: SKScene {
     //END MARK
     
     func zombieHit(cat: SKSpriteNode) {
-        run(SKAction.playSoundFileNamed("hitCat.wav",
-                                        waitForCompletion: false))
+        run(catCollisionSound)
         cat.removeFromParent()
     }
     func zombieHit(enemy: SKSpriteNode) {
-        run(SKAction.playSoundFileNamed("hitCatLady.wav",
-                                        waitForCompletion: false))
+        run(enemyCollisionSound)
         enemy.removeFromParent()
     }
 }
