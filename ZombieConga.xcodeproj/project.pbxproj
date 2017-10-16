@@ -21,6 +21,7 @@
 		5889F12F1F915713002E8CE3 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5889F1261F91563F002E8CE3 /* backgroundMusic.mp3 */; };
 		5889F1311F9493A5002E8CE3 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5889F1301F9493A5002E8CE3 /* GameOverScene.swift */; };
 		5889F1331F949ABD002E8CE3 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5889F1321F949ABD002E8CE3 /* MainMenuScene.swift */; };
+		5889F1351F94AA2F002E8CE3 /* GLIMSTIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5889F1341F94A970002E8CE3 /* GLIMSTIC.TTF */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		5889F12A1F91563F002E8CE3 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
 		5889F1301F9493A5002E8CE3 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		5889F1321F949ABD002E8CE3 /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
+		5889F1341F94A970002E8CE3 /* GLIMSTIC.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GLIMSTIC.TTF; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 		5889F10A1F90C8AF002E8CE3 /* ZombieConga */ = {
 			isa = PBXGroup;
 			children = (
+				5889F1341F94A970002E8CE3 /* GLIMSTIC.TTF */,
 				5889F1251F91563F002E8CE3 /* Sounds */,
 				5889F10B1F90C8AF002E8CE3 /* AppDelegate.swift */,
 				5889F1111F90C8AF002E8CE3 /* GameScene.swift */,
@@ -158,6 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5889F1351F94AA2F002E8CE3 /* GLIMSTIC.TTF in Resources */,
 				5889F12C1F91570C002E8CE3 /* lose.wav in Resources */,
 				5889F1171F90C8AF002E8CE3 /* Main.storyboard in Resources */,
 				5889F12F1F915713002E8CE3 /* backgroundMusic.mp3 in Resources */,

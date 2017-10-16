@@ -58,6 +58,10 @@ class GameScene: SKScene {
     let cameraNode = SKCameraNode()
     let cameraMovePointsPerSec:CGFloat = 200
     
+    //Labels
+    let livesLabel = SKLabelNode(fontNamed: "Glimstick")
+    let catsLabel = SKLabelNode(fontNamed: "Glimstick")
+
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16/9
         let playableHeight = size.width / maxAspectRatio
@@ -115,6 +119,29 @@ class GameScene: SKScene {
         camera = cameraNode
         cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         
+        livesLabel.text = "Lives: X"
+        livesLabel.fontColor = SKColor.black
+        livesLabel.fontSize = 100
+        livesLabel.zPosition = 150
+        cameraNode.addChild(livesLabel)
+        livesLabel.horizontalAlignmentMode = .left
+        livesLabel.verticalAlignmentMode = .bottom
+        livesLabel.position = CGPoint(
+            x: -playableRect.size.width/2 + CGFloat(20),
+            y: -playableRect.size.height/2 + CGFloat(20))
+        
+        catsLabel.text = "Cats: X"
+        catsLabel.fontColor = SKColor.black
+        catsLabel.fontSize = 100
+        catsLabel.zPosition = 150
+        cameraNode.addChild(catsLabel)
+        catsLabel.horizontalAlignmentMode = .right
+        catsLabel.verticalAlignmentMode = .bottom
+        catsLabel.position = CGPoint(
+            x: playableRect.size.width/2 - CGFloat(20),
+            y: -playableRect.size.height/2 + CGFloat(20))
+        
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -130,6 +157,7 @@ class GameScene: SKScene {
         boundsCheckZombie()
         moveTrain()
         moveCamera()
+        livesLabel.text = "Lives: \(lives)"
         if lives <= 0 && !isGameOver {
             isGameOver = true
             gameOver(won: false)
@@ -354,6 +382,8 @@ class GameScene: SKScene {
             self.rotate(sprite: node as! SKSpriteNode, direction: direction, rotateRadiansPerSec: self.catRotateRadiansPerSec)
             targetPosition = node.position
         }
+        catsLabel.text = "Cats: \(cats)"
+
         if cats >= 15 && !isGameOver{
             isGameOver = true
             gameOver(won: true)
