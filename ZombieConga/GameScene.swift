@@ -40,7 +40,7 @@ class GameScene: SKScene {
     var dt: TimeInterval = 0
     var isInvincible = false
     var lives = 5
-    var gameOver = false
+    var isGameOver = false
     
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16/9
@@ -125,6 +125,10 @@ class GameScene: SKScene {
         }
         boundsCheckZombie()
         moveTrain()
+        if lives <= 0 && !isGameOver {
+            isGameOver = true
+            print("You lose!")
+        }
     }
     
     
@@ -285,10 +289,11 @@ class GameScene: SKScene {
     
     func moveTrain() {
         var targetPosition = zombie.position
+        var cats = 0
         enumerateChildNodes(withName: "train") { node, stop in
             let offset = targetPosition - node.position// a
             let direction = offset.normalized() // b
-            
+            cats += 1
             if !node.hasActions() {
                 let actionDuration = 0.3
                 let amountToMovePerSec = direction * self.catMovePointsPerSec // c
@@ -296,8 +301,12 @@ class GameScene: SKScene {
                 let moveAction = SKAction.moveBy(x: amountToMove.x, y: amountToMove.y, duration: actionDuration)// e
                 node.run(moveAction)
             }
-             self.rotate(sprite: node as! SKSpriteNode, direction: direction, rotateRadiansPerSec: self.catRotateRadiansPerSec)
+            self.rotate(sprite: node as! SKSpriteNode, direction: direction, rotateRadiansPerSec: self.catRotateRadiansPerSec)
             targetPosition = node.position
+        }
+        if cats >= 15 && !isGameOver{
+            isGameOver = true
+            print("You win")
         }
     }
     
@@ -334,6 +343,8 @@ class GameScene: SKScene {
     
     func zombieHit(enemy: SKSpriteNode) {
         run(enemyCollisionSound)
+        loseCats()
+        lives -= 1
         
         let blinkTimes = 10.0
         let duration = 3.0
