@@ -101,9 +101,6 @@ class GameScene: SKScene {
                 self?.spawnCat()
                 },
                                SKAction.wait(forDuration: 1)])))
-        
-        debugDrawPlayableArea()
-        
     }
     
     override func update(_ currentTime: TimeInterval) {
