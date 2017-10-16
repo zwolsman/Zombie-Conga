@@ -127,10 +127,16 @@ class GameScene: SKScene {
         moveTrain()
         if lives <= 0 && !isGameOver {
             isGameOver = true
-            print("You lose!")
+            gameOver(won: false)
         }
     }
     
+    func gameOver(won:Bool) {
+        let gameOverScene = GameOverScene(size: size, won: won)
+        gameOverScene.scaleMode = scaleMode
+        let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+        view?.presentScene(gameOverScene, transition: reveal)
+    }
     
     override func didEvaluateActions() {
         checkCollisions()
@@ -306,7 +312,7 @@ class GameScene: SKScene {
         }
         if cats >= 15 && !isGameOver{
             isGameOver = true
-            print("You win")
+            gameOver(won: true)
         }
     }
     
