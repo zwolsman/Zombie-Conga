@@ -78,6 +78,7 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
+        playBackgroundMusic(filename: "backgroundMusic.mp3")
         let background = SKSpriteNode(imageNamed: "background1")
         background.anchorPoint = CGPoint.zero
         background.position = CGPoint.zero
@@ -129,6 +130,7 @@ class GameScene: SKScene {
     }
     
     func gameOver(won:Bool) {
+        backgroundMusicPlayer.stop()
         let gameOverScene = GameOverScene(size: size, won: won)
         gameOverScene.scaleMode = scaleMode
         let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
